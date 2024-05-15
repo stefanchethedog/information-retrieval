@@ -37,7 +37,7 @@ const IndexForm: React.FC<IndexFormProps> = () => {
   };
 
   return (
-    <div>
+    <div className="p-12 border-2 border-slate-300 bg-white rounded-md absolute top-0 right-0 -translate-x-12 translate-y-12">
       <div>
         <Button>Create index</Button>
       </div>
