@@ -44,7 +44,9 @@ const DataDisplay: React.FC<DataDisplayProps> = () => {
         <div>
           <div className="flex gap-[20rem]">
             <h1 className="text-3xl mb-8">
-              <span className="font-bold">Total Results:</span>{" "}
+              <span className="font-bold whitespace-nowrap">
+                Total Results:
+              </span>{" "}
               {data?.totalItems}
             </h1>
             <div className="flex gap-4">
@@ -70,7 +72,7 @@ const DataDisplay: React.FC<DataDisplayProps> = () => {
               )}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-4">
             {data?.data?.map((item) => (
               <DataDisplayCard
                 downloadButton={

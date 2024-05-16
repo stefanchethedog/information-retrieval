@@ -13,7 +13,7 @@ const DataDisplayCard: React.FC<DataDisplayCardProps> = ({
   options,
 }) => {
   return (
-    <div className="border border-slate-400 px-8 py-4 w-[45rem] bg-white rounded-md">
+    <div className="border border-slate-400 px-8 py-4 w-[103rem] bg-white rounded-md">
       {options.map((option, index) => (
         <DataDisplay key={index} {...option} />
       ))}

@@ -17,7 +17,7 @@ export const configObject: ConfigObject<Partial<DocumentSource>> = {
     mapper: (value) => [
       {
         title: "Content",
-        value: `${value?.slice(0, 70)}...` || "",
+        value: value || "",
       },
     ],
     index: 2,
