@@ -9,7 +9,7 @@ type ButtonProps = {
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, className, ...rest }, ref) => {
     const classes = twMerge(
-      "w-full flex-none bg-slate-600 hover:bg-slate-700 text-white text-lg leading-6 font-semibold py-3 px-6 border border-transparent rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-900 focus:outline-none transition-colors duration-200",
+      "w-full flex-none bg-slate-600 hover:bg-slate-700 text-white text-lg leading-6 font-semibold py-3 px-6 border border-transparent rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-900 focus:outline-none transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed disabled:hover:bg-slate-400 disabled:opacity-50",
       className
     );
 

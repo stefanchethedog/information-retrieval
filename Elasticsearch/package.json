@@ -45,10 +45,13 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.13.1",
     "@heroicons/react": "2.0.18",
+    "axios": "^1.6.8",
     "classnames": "^2.5.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.51.4",
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.23.1",
     "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {

@@ -10,8 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^8.13.1",
+    "cors": "^2.8.5",
     "elasticsearch": "^16.7.3",
     "express": "^4.19.2",
     "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }

@@ -13,13 +13,15 @@ export default defineConfig((configEnv) => {
     test: {
       globals: true,
       environment: "happy-dom",
-      setupFiles: "./src/infrastructure/tests.setup.ts",
+      setupFiles: ["./src/infrastructure/tests.setup.ts"],
     },
     resolve: {
       alias: {
         app: resolve(__dirname, "src", "app"),
         components: resolve(__dirname, "src", "components"),
         hooks: resolve(__dirname, "src", "hooks"),
+        utils: resolve(__dirname, "src", "utils"),
+        providers: resolve(__dirname, "src", "providers"),
       },
     },
     css: {

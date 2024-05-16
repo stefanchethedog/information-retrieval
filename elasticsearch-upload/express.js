@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
 const { Client } = require("@elastic/elasticsearch");
 
 const app = express();
@@ -8,22 +9,26 @@ const port = 3001;
 
 const esClient = new Client({
   node: "https://e61eef22cc3248a298bb08f2d896b27b.us-central1.gcp.cloud.es.io:443",
+  cloud: {
+    id: "dad423556c9c43b8a49a25d8f9dc5b89:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJGU2MWVlZjIyY2MzMjQ4YTI5OGJiMDhmMmQ4OTZiMjdiJGZkNDVlNGJhNTM5NzQyNTBhZTgwMThhNTRiZGI1NDZk",
+  },
   auth: {
-    apiKey: {
-      id: "PretrazivanjeAplikacija",
-      api_key: "elNiNWZJOEJIOEZUWGFqYkVUbFU6Q1ZZOGNtejRRY0cwa2ZJUk1abVhuQQ==",
-    },
+    apiKey: "Z0tsamZvOEJTM016c3JlT0JPd2w6RWNzb0NMaGZTUkc2alVpRThXb2pCUQ==",
   },
 });
 
 const inputDir = path.join(__dirname, "inputFiles");
+
+// Enable CORS for all routes
+app.use(cors());
 
 app.use(express.json());
 
 app.post("/create-index", async (req, res) => {
   try {
     const indexExists = await esClient.indices.exists({ index: "my_index" });
-    if (!indexExists.body) {
+
+    if (!indexExists) {
       await esClient.indices.create({
         index: "my_index",
         body: {
@@ -32,6 +37,7 @@ app.post("/create-index", async (req, res) => {
               title: { type: "text" },
               content: { type: "text" },
               timestamp: { type: "date" },
+              filePath: { type: "keyword" },
             },
           },
         },
@@ -53,18 +59,19 @@ app.post("/create-index", async (req, res) => {
         title: file,
         content: content,
         timestamp: new Date().toISOString(),
+        filePath: filePath,
       });
     }
 
-    const { body: bulkResponse } = await esClient.bulk({
+    const bulkResponse = await esClient.bulk({
       body: bulkOperations,
     });
-
     if (bulkResponse.errors) {
       res
         .status(500)
         .json({ message: "Bulk index errors", errors: bulkResponse.items });
     } else {
+      console.log("Success??");
       res
         .status(200)
         .json({ message: "Index created and files indexed successfully" });
@@ -76,14 +83,14 @@ app.post("/create-index", async (req, res) => {
 });
 
 app.get("/search", async (req, res) => {
-  const { query, field, page = 0, size = 10 } = req.query;
+  const { query, field, page = 0, size = 5 } = req.query;
   const from = page * size;
 
   try {
-    const { body } = await esClient.search({
+    const response = await esClient.search({
       index: "my_index",
       from,
-      size: parseInt(size, 10),
+      size,
       body: {
         query: {
           match: {
@@ -93,11 +100,13 @@ app.get("/search", async (req, res) => {
       },
     });
 
-    const totalHits = body.hits.total.value;
+    console.log(response);
+
+    const totalHits = response.hits.total.value;
     const totalPages = Math.ceil(totalHits / size);
 
     res.status(200).json({
-      data: body.hits.hits,
+      data: response.hits.hits,
       totalPages,
       currentPage: parseInt(page, 10),
       totalItems: totalHits,
