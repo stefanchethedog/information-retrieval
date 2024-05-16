@@ -117,6 +117,27 @@ app.get("/search", async (req, res) => {
   }
 });
 
+app.get("/download/:fileId", async (req, res) => {
+  const fileId = req.params.fileId;
+
+  try {
+    // Fetch file content from Elasticsearch based on the file ID
+    const body = await esClient.get({
+      index: "my_index",
+      id: fileId,
+    });
+    // Assuming the file content is stored in a field named "file_content"
+    const fileContent = body._source.content;
+
+    // Serve the file content for download
+    res.setHeader("Content-Disposition", `attachment; filename=${fileId}`);
+    res.send(fileContent);
+  } catch (error) {
+    console.error("Error downloading file from Elasticsearch:", error);
+    res.status(500).send("Error downloading file from Elasticsearch");
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
